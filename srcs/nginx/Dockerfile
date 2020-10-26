@@ -36,9 +36,10 @@ RUN apk update && \
 	--no-cache
 
 #create a user using defaults and any specified additional info, create a user and a group named www
-#also create a directory vor html files
+#also create a directory for html files
 RUN adduser -D -g 'www' www && \
 	mkdir /www &&\
+	mkdir /run/nginx/ && \
 	chown -R www:www /var/lib/nginx && \
 	chown -R www:www /www
 
@@ -46,6 +47,7 @@ RUN adduser -D -g 'www' www && \
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY index.html www/
 
+RUN mv /var/lib/nginx/html/index.html /var/www/localhost
 #set ownerships and generate ssl key and certificate
 RUN	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj '/C=NL/ST=Noord-Holland/L=Amsterdam/O=Codam/CN=123' -keyout /etc/ssl/certs/localhost.key -out /etc/ssl/certs/localhost.crt
 
@@ -54,7 +56,8 @@ RUN	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj '/C=NL/ST=Noord-Ho
 #using the keys generated in the previous run
 EXPOSE 80 443
 
+#RUN service nginx start
+
 #restart services and use bash to create in-line command shell
-#used entrypoint rather than cmd to ensure no extra arguments can be provided. 
-#To toggle the autoindex on and off use: bash srcs/autoindex_toggle.sh in shell
+#used entrypoint rather than cmd to ensure no extra arguments can be provided.
 ENTRYPOINT  /bin/bash
