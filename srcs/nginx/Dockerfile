@@ -28,6 +28,7 @@ RUN apk update && \
 	apk add \
 	nginx \
 	openssl \
+	openssh \
 	bash \
 	openrc \
 	coreutils \
@@ -41,23 +42,22 @@ RUN adduser -D -g 'www' www && \
 	mkdir /www &&\
 	mkdir /run/nginx/ && \
 	chown -R www:www /var/lib/nginx && \
-	chown -R www:www /www
+	chown -R www:www /www 
 
 #setup nginx and phpmyadmin and turn on php7.3-fpm
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY index.html www/
+COPY nginx.conf /etc/nginx/
 
-RUN mv /var/lib/nginx/html/index.html /var/www/localhost
+#move standard nginx page to www to display it
+RUN mv /var/lib/nginx/html/index.html www/
 #set ownerships and generate ssl key and certificate
-RUN	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj '/C=NL/ST=Noord-Holland/L=Amsterdam/O=Codam/CN=123' -keyout /etc/ssl/certs/localhost.key -out /etc/ssl/certs/localhost.crt
+RUN	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -subj '/C=NL/ST=Noord-Holland/L=Amsterdam/O=Codam/CN=123' -keyout /etc/ssl/certs/localhost.key -out /etc/ssl/certs/localhost.pem
 
 #80 for internal 433 for ssl
 #according to the nginx config in "default" the 80 port will redirect to 443 for a secure connection 
 #using the keys generated in the previous run
-EXPOSE 80 443
+EXPOSE 80 443 22
 
 #RUN service nginx start
 
-#restart services and use bash to create in-line command shell
-#used entrypoint rather than cmd to ensure no extra arguments can be provided.
-ENTRYPOINT  /bin/bash
+#start nginx
+ENTRYPOINT nginx -g "daemon off;"
