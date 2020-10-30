@@ -12,13 +12,13 @@ services:
 
 components:
 - kubernetes web dashboard
-- load balancer
+- load balancer (metallb)
 - wordpress website on port 5050 with mysql database and nginx server
 - phpmyadmin on port 5000 with sql database and nginx server.
 - nginx server on ports 80 and 443. [DONE]
 	- port 80 needs a 301 redirection to 443 [DONE]
 	- if /wordpress is routed, 307 redirect to IP:WPPORT [DONE]
-	- if /phpmyadmin is routed, reverse proxy to IP:PMAPORT
+	- if /phpmyadmin is routed, reverse proxy to IP:PMAPORT [DONE]
 - FTPS server on port 21
 - grafana platform on port 3000
 	- must link to Influx DB database

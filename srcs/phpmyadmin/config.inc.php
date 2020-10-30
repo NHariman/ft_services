@@ -38,10 +38,10 @@ $cfg['Servers'][$i]['AllowNoPassword'] = false;
  */
 
 /* User used to manipulate with storage */
-$cfg['Servers'][$i]['controlhost'] = '';
-$cfg['Servers'][$i]['controlport'] = '';
+$cfg['Servers'][$i]['controlhost'] = 'influxdb';
+$cfg['Servers'][$i]['controlport'] = '8088';
 $cfg['Servers'][$i]['controluser'] = 'wpuser';
-$cfg['Servers'][$i]['controlpass'] = 'dbpassword';
+$cfg['Servers'][$i]['controlpass'] = 'password';
 
 /* Storage database and tables */
 $cfg['Servers'][$i]['pmadb'] = 'phpmyadmin';
@@ -64,6 +64,16 @@ $cfg['Servers'][$i]['savedsearches'] = 'pma__savedsearches';
 $cfg['Servers'][$i]['central_columns'] = 'pma__central_columns';
 $cfg['Servers'][$i]['designer_settings'] = 'pma__designer_settings';
 $cfg['Servers'][$i]['export_templates'] = 'pma__export_templates';
+/* $i++ ensures database connection with the default local host is not lost */
+$i++;
+/* host sets it to the IP or hostname of the remote server */
+$cfg['Servers'][$i]['host'] = 'mysql';
+/* user an dpassword set for the remote server login. */
+$cfg['Servers'][$i]['user'] = 'wpuser';
+$cfg['Servers'][$i]['password'] = 'password';
+/* remote mysql port */
+$cfg['Servers'][$i]['port'] = '3306';
+$cfg['Servers'][$i]['auth_type'] = 'config';
 
 /**
  * End of servers configuration
