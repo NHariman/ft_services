@@ -31,7 +31,7 @@ RUN	mv srcs/wp-config.php var/www/html/wordpress/
 
 RUN chmod +x /srcs/wp-cli.phar &&\
 	mv srcs/wp-cli.phar /usr/local/bin/wp &&\
-	wp core install --url="https://localhost/wordpress"  --title="ft_services" --admin_user=wpuser --admin_password=password --admin_email=nhariman@student.codam.nl --allow-root --path="var/www/html/wordpress"
+	wp core install --url="http://localhost/wordpress"  --title="ft_services" --admin_user=wpuser --admin_password=password --admin_email=nhariman@student.codam.nl --allow-root --path="var/www/wordpress"
 
 #set ownerships and generate ssl key and certificate
 RUN chown -R www:www /var/www/ 
